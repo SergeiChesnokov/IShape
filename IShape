@@ -1,0 +1,136 @@
+#include "stdafx.h"
+#include <iostream>
+
+class IShape
+{
+
+public:
+
+	IShape();
+	double width, height, radius;
+	double A, B, C;
+	double Area(double width)
+	{
+		return width * width;
+	}
+	double Area(double width, double height)
+	{
+		return width * height;
+	}
+	double Area(double A, double B, double C)
+	{
+		double p = (A + B + C) / 2;
+		return sqrt(p * (p - A) * (p - B) * (p - C));
+	}
+	double Area(double radius, bool IsItCircle)
+	{
+		return radius * radius* 3.14;
+	}
+
+};
+
+class Square :public IShape
+{
+public:
+
+	Square(double width)
+	{
+		IShape::width = width;
+	}
+
+	double Area()
+	{
+		return IShape::Area(width);
+	}
+};
+
+class Rectangle :public IShape
+{
+public:
+
+	Rectangle(double width, double height)
+	{
+		IShape::width = width;
+		IShape::height = height;
+	}
+
+	double Area()
+	{
+		return IShape::Area(width, height);
+	}
+};
+
+class Triangle :public IShape
+{
+public:
+
+	Triangle(double A, double B, double C)
+	{
+		IShape::A = A;
+		IShape::B = B;
+		IShape::C = C;
+	}
+
+	double Area()
+	{
+		if (triangleIsCorrect()) 
+		{
+			return IShape::Area(A, B, C);
+		}
+		else
+		{
+			std::cout << "wrong triangle" << std::endl;
+			return -1;
+		}
+	}
+
+private:
+	bool triangleIsCorrect()
+	{
+		if (A >= B + C || B >= A + C || C >= B + A)
+		{
+			return false;
+		}
+		return true;
+	}
+};
+
+class Circle :public IShape
+{
+public:
+
+	Circle(double radius)
+	{
+		IShape::radius = radius;
+	}
+
+	double Area()
+	{
+		return IShape::Area(radius, true);
+	}
+};
+
+int main()
+{
+	Triangle BOB(1,1,7);
+
+	std::cout << BOB.Area() << std::endl;
+
+	Circle ZOD(17);
+
+	std::cout << ZOD.Area() << std::endl;
+
+	Square GOD(5);
+
+	std::cout << GOD.Area() << std::endl;
+
+	Rectangle TOD(5, 4);
+
+	std::cout << TOD.Area() << std::endl;
+	
+	return 0;
+}
+
+IShape::IShape()
+{
+}
